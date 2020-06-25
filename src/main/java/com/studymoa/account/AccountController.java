@@ -40,7 +40,9 @@ public class AccountController {
             return "account/sign-up";
         }
 
-        accountService.proccessNewAccount(signUpForm);
+        /*로그인*/
+        Account account = accountService.proccessNewAccount(signUpForm);
+        accountService.login(account);
         return "redirect:";
     }
 
@@ -53,13 +55,14 @@ public class AccountController {
             model.addAttribute("error", "wrong.email");
             return view;
         }
-        if (!account.getEmailCheckToken().equals(token)) {
+        if (!account.isValidToken(token)) {
             model.addAttribute("error", "wrong.token");
             return view;
         }
 
-        account.setEmailVerified(true);
-        account.setJoinedAt(LocalDateTime.now());
+        account.completeSignUp();
+        /*로그인*/
+        accountService.login(account);
         model.addAttribute("numberOfUser", accountRepository.count());
         model.addAttribute("nickname", account.getNickname());
         return view;
