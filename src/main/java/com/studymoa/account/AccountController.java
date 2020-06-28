@@ -67,4 +67,15 @@ public class AccountController {
         model.addAttribute("nickname", account.getNickname());
         return view;
     }
+
+    @GetMapping("/check-email")
+    public String checkEmail() {
+        return "account/check-email";
+    }
+
+    @GetMapping("/send-email-token")
+    public String sendCheckEmail(@CurrentUser Account account, Model model) {
+        accountService.reSendConfirmEmail(account);
+        return "/";
+    }
 }

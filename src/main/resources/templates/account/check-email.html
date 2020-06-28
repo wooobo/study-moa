@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head th:replace="fragments.html :: head"></head>
+<body class="bg-light">
+<div th:replace="fragments.html :: main-nav"></div>
+
+<div class="py-5 text-center">
+    <p class="lead">스터디 모아 이메일 인증 전송</p>
+    <div class="alert alert-info" role="alert">
+        <h2>
+            <span sec:authentication="name"></span>님, 이메일 인증이 완료되었습니다.
+        </h2>
+    </div>
+    <div class="alert alert-warning" role="alert" th:if="${account != null && !account.emailVerified}">
+        <div class="alert alert-warning" role="alert">
+            스터디모아 이메일 <a th:href="@{/send-email-token}" class="alert-link">인증보내기.</a>
+        </div>
+    </div>
+
+</div>
+<div th:replace="fragments.html :: footer"></div>
+</body>
+</html>

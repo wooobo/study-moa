@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <title>StudyMoa</title>
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-free/css/all.css" />
+
+
+</head>
+
+
+<div th:fragment="main-nav">
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+        <a class="navbar-brand" href="#" th:href="@{/}">
+            <img th:src="@{'/images/logo.png'}" width="30" height="30" alt="" loading="lazy">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <form class="form-inline">
+                        <input class="form-control mr-sm-2" type="search" placeholder="스터디 찾기" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">찾기</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+
+        <div class="form-inline my-2 my-lg-0">
+            <ul class="navbar-nav">
+                <li class="nav-item " sec:authorize="!isAuthenticated()">
+                    <a class="nav-link text-white active" th:href="@{/}">로그인</a>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link text-white" th:href="@{/sign-up}">회원가입</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link text-white" th:href="@{/notifications}"><i class="far fa-bell"></i></a>
+                </li>
+                <li class="nav-item mr-1" sec:authorize="isAuthenticated()">
+                    <a class="nav-link text-white btn btn-outline-primary" th:href="@{/notifications}">스터디 개설<i class="fas fa-plus"></i></a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span sec:authentication="name"></span>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" th:href="@{'/profile' + ${#authentication.name}}">프로필</a>
+                            <a class="dropdown-item" href="#">스터디</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" th:href="@{'/settings/profile'}">설정</a>
+                            <a class="dropdown-item" >
+                                <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
+                                    <button class="dropdown-item" type="submit">로그아웃</button>
+                                </form>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="alert alert-warning" role="alert" th:if="${account != null && !account.emailVerified}">
+        스터디모아 가입을 완료하려면 <a th:href="@{/check-email}" class="alert-link">계정 인증 이메일을 확인</a>하세요.
+    </div>
+</div>
+
+<footer th:fragment="footer">
+    <div class="mx-auto text-center">
+        <span>스터디 모아</span>
+    </div>
+
+    <script src="/node_modules/jquery/dist/jquery.slim.js"></script>
+    <!--    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>-->
+    <script src="/node_modules/@fortawesome/fontawesome-free/js/all.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+</footer>
